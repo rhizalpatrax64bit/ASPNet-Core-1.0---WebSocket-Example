@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Use this area to provide additional information.</p>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+            <div class="col-md-4">Send Message : </div>
+            <div class="col-md-6">
+                <form id="form">
+                    <input id="message" class="form-control" autocomplete="off" />
+                </form>
+            </div>    
+            </div>
+        </div>
+        <div class="panel-body">
+           
+        </div>
+    </div>
+
+   
+    <script>
+        (function () {
+            var webSocketProtocol = location.protocol == "https:" ? "wss:" : "ws:";
+            var webSocketURI = webSocketProtocol + "//" + location.host + "/ws";
+            socket = new WebSocket(webSocketURI);
+            socket.onopen = function () {
+                console.log("Connected.");
+            };
+            socket.onclose = function (event) {
+                if (event.wasClean) {
+                    console.log('Disconnected.');
+                } else {
+                    console.log('Connection loss.');
+                }
+                console.log('Code: ' + event.code + '. Reason: ' + event.reason);
+            };
+            socket.onmessage = function (event) {
+                $(".panel-body").append(
+                       '<div class="alert alert-success" role="alert"><a href="#" class="alert-link">Message From Server : '+event.data+'</a></div>'
+                );
+                console.log("Data received: " + event.data);
+            };
+            socket.onerror = function (error) {
+                console.log("Error: " + error.message);
+            };
+            var form = document.getElementById('form');
+            var message = document.getElementById('message');
+            form.onsubmit = function () {
+                socket.send(message.value);
+                message.value = '';
+                return false;
+            };
+        })();
+    </script>
