@@ -12,3 +12,5 @@
 *   dotnet restore
 *   dotnet run
 *   access http://localhost:5000/Home/About
+
+![alt tag](https://raw.githubusercontent.com/rhizalpatrax64bit/ASPNet-Core-1.0---WebSocket-Example/master/SS.png)
